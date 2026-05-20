@@ -1,0 +1,12 @@
+import java.sql.Date;
+
+public class Crianca {
+
+    private int id_Crianca;
+    private String nome;
+    private String matricula_Certidao;
+    private Date data_Nascimento;
+    private int id_Pai;
+    private int id_Mae;
+
+}

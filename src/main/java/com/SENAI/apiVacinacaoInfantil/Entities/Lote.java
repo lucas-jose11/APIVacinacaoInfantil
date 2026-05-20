@@ -1,3 +1,5 @@
+package com.SENAI.apiVacinacaoInfantil.Entities;
+
 import java.sql.Date;
 
 public class Lote {

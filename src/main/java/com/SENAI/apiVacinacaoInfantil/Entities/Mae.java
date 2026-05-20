@@ -1,3 +1,5 @@
+package com.SENAI.apiVacinacaoInfantil.Entities;
+
 public class Mae {
 
     private int id_Mae;

@@ -1,4 +1,9 @@
 package com.SENAI.apiVacinacaoInfantil.Contracts.Service;
 
-public class ICriancaService {
+import com.SENAI.apiVacinacaoInfantil.DTOs.CriancaDTO;
+
+public interface ICriancaService {
+
+    void cadastrar(CriancaDTO dto);
+
 }

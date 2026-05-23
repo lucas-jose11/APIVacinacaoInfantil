@@ -1,5 +1,11 @@
 package com.SENAI.apiVacinacaoInfantil.ClassesAuxiliares;
 
+import com.SENAI.apiVacinacaoInfantil.DTOs.CriancaDTO;
+import com.SENAI.apiVacinacaoInfantil.DTOs.ResponsavelDTO;
+import com.SENAI.apiVacinacaoInfantil.Service.CriancaService;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 public class Sistema {
 
@@ -63,7 +69,62 @@ public class Sistema {
     }
 
     public void CadastrarCrianca(){
+        Scanner sc = new Scanner(System.in);
+        ResponsavelDTO responsavelDTO = new ResponsavelDTO();
+        CriancaDTO kidDTO = new CriancaDTO();
 
+        LimparTela();
+
+        System.out.println("=== CADASTRO DA CRIANÇA ===");
+
+        // responsável
+        System.out.println("\nComeçaremos pelo cadastro do RESPONSÁVEL.");
+
+        System.out.print("Nome do responsável: ");
+        responsavelDTO.setNome(sc.nextLine());
+
+        System.out.print("CPF do responsável: ");
+        responsavelDTO.setCpf(sc.nextLine());
+
+        System.out.print("Telefone do responsável: ");
+        responsavelDTO.setTelefone(sc.nextLine());
+
+
+        // CRIANÇA
+        System.out.println("\nAgora o cadastro de sua criança!");
+
+        System.out.print("Nome da criança: ");
+        kidDTO.setNome(sc.nextLine());
+
+        System.out.print("Número da matrícula da Certidão de Nascimento (6 números): ");
+        kidDTO.setMatriculaCertidao(sc.nextLine());
+
+        System.out.print("Data de nascimento (dd/MM/yyyy): ");
+
+        DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        kidDTO.setDataNascimento(
+                LocalDate.parse(sc.nextLine(), formatter)
+        );
+
+        // Associação dos DTOs
+        kidDTO.setResponsavel(responsavelDTO);
+
+        // chamar service aqui
+        CriancaService criancaService = new CriancaService();
+        criancaService.cadastrar(kidDTO);
+
+        System.out.println(
+                "\nCriança e responsáveis cadastrados com sucesso!"
+        );
+
+        System.out.println(
+                "Pressione ENTER para voltar ao menu."
+        );
+
+        sc.nextLine();
+        sc.close();
     }
 
     public void VerificarCarteiraDeVacinacao(){

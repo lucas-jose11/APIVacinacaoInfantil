@@ -82,4 +82,8 @@ public class Crianca {
     public void setResponsavel(Responsavel responsavel) {
         this.responsavel = responsavel;
     }
+
+    public int getIdResponsavel() {
+        return responsavel.getIdResponsavel();
+    }
 }

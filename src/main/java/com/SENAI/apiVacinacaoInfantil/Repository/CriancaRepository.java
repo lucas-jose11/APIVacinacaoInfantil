@@ -6,51 +6,40 @@ import com.SENAI.apiVacinacaoInfantil.Infrastructure.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 public class CriancaRepository
         implements ICriancaRepository {
 
     @Override
-    public void salvar(
-            Crianca crianca) {
+    public void inserirCriancaNoBanco(Crianca crianca) {
 
         String sql =
                 "INSERT INTO Crianca " +
-                        "(nome, matricula_certidao, data_nascimento, id_pai, id_mae) " +
-                        "VALUES (?, ?, ?, ?, ?)";
+                "(nome, matricula_certidao, data_nascimento, id_responsavel) " +
+                "VALUES (?, ?, ?, ?)";
 
         try (
                 Connection conn = DatabaseConnection.conectar();
-
                 PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
-
+                
             stmt.setString(1, crianca.getNome());
-
             stmt.setString(2, crianca.getMatriculaCertidao());
-
-            stmt.setDate(
-                    3,
-                    java.sql.Date.valueOf(
-                            crianca.getDataNascimento()
-                    )
-            );
-
-            stmt.setInt(4, 0);
-            stmt.setInt(5, 0);
+            stmt.setDate(3,java.sql.Date.valueOf(crianca.getDataNascimento()));
+            // Agora usa o ID do responsável
+            stmt.setInt(4, crianca.getIdResponsavel());
 
             stmt.executeUpdate();
 
-            System.out.println(
-                    "Cadastro salvo no banco!"
-            );
+            System.out.println( "Cadastro salvo no banco!");
+
+        } catch (SQLIntegrityConstraintViolationException e) {
+
+            System.out.println("\nERRO: Já existe uma criança cadastrada com essa matrícula da certidão!");
 
         } catch (Exception e) {
-
-            System.out.println(
-                    "Erro ao salvar: "
-                            + e.getMessage()
-            );
+            System.out.println( "Erro ao salvar: " + e.getMessage());
         }
     }
 }

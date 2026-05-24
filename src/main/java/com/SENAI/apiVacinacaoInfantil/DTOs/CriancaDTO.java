@@ -50,8 +50,8 @@ public class CriancaDTO {
         return responsavel;
     }
 
-    public void setResponsavel(ResponsavelDTO pai) {
-        this.responsavel = pai;
+    public void setResponsavel(ResponsavelDTO responsavel) {
+        this.responsavel = responsavel;
     }
 
 }

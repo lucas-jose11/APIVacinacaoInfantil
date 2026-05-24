@@ -3,6 +3,7 @@ package com.SENAI.apiVacinacaoInfantil.ClassesAuxiliares;
 import com.SENAI.apiVacinacaoInfantil.DTOs.CriancaDTO;
 import com.SENAI.apiVacinacaoInfantil.DTOs.ResponsavelDTO;
 import com.SENAI.apiVacinacaoInfantil.Service.CriancaService;
+import com.SENAI.apiVacinacaoInfantil.Service.ResponsavelService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -15,9 +16,10 @@ public class Sistema {
         }
     }
 
+    private Scanner sc = new Scanner(System.in);
+
     public void IniciarMenu() {
 
-        Scanner sc = new Scanner(System.in);
         int op;
 
         System.out.println("Bem-vindo ao Criança Check-Out!");
@@ -29,12 +31,13 @@ public class Sistema {
 
             System.out.println("[1] - Cadastrar minha criança.");
             System.out.println("[2] - Verificar a carteira de vacinação.");
-            System.out.println("[3] - Adicionar vacina.");
-            System.out.println("[4] - Deletar vacina.");
+            System.out.println("[3] - Adicionar vacina na carteira.");
+            System.out.println("[4] - Deletar vacina da carteira.");
             System.out.println("[5] - SAIR");
 
             System.out.print("Digite a opção: ");
             op = sc.nextInt();
+            sc.nextLine();
 
             switch (op) {
 
@@ -69,7 +72,6 @@ public class Sistema {
     }
 
     public void CadastrarCrianca(){
-        Scanner sc = new Scanner(System.in);
         ResponsavelDTO responsavelDTO = new ResponsavelDTO();
         CriancaDTO kidDTO = new CriancaDTO();
 
@@ -99,7 +101,7 @@ public class Sistema {
         System.out.print("Número da matrícula da Certidão de Nascimento (6 números): ");
         kidDTO.setMatriculaCertidao(sc.nextLine());
 
-        System.out.print("Data de nascimento (dd/MM/yyyy): ");
+        System.out.print("Data de nascimento da criança (usando o formato dd/MM/yyyy): ");
 
         DateTimeFormatter formatter =
                 DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -111,20 +113,16 @@ public class Sistema {
         // Associação dos DTOs
         kidDTO.setResponsavel(responsavelDTO);
 
-        // chamar service aqui
+        // Chamar o método do Service aqui, passando o DTO criado
         CriancaService criancaService = new CriancaService();
-        criancaService.cadastrar(kidDTO);
 
-        System.out.println(
-                "\nCriança e responsáveis cadastrados com sucesso!"
-        );
+        // Lembrando que dentro do método cadastrarCrianca do Service, tem a lógica para verificar se o responsável já existe no banco de dados, e caso não exista, cadastrar o responsável, e depois cadastrar a criança com o id do responsável.
+        criancaService.cadastrarCrianca(kidDTO);
 
-        System.out.println(
-                "Pressione ENTER para voltar ao menu."
-        );
+        System.out.println("\nCriança e responsável cadastrados com sucesso!");
+        System.out.println(  "Pressione ENTER para voltar ao menu.");
 
         sc.nextLine();
-        sc.close();
     }
 
     public void VerificarCarteiraDeVacinacao(){

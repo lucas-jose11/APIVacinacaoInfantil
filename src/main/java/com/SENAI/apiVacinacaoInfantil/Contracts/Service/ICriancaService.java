@@ -4,6 +4,6 @@ import com.SENAI.apiVacinacaoInfantil.DTOs.CriancaDTO;
 
 public interface ICriancaService {
 
-    void cadastrar(CriancaDTO dto);
+    void cadastrarCrianca(CriancaDTO dto);
 
 }

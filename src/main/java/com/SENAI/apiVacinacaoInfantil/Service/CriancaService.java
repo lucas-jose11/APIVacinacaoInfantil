@@ -38,8 +38,10 @@ public class CriancaService implements ICriancaService {
         repositoryCrianca.inserirCriancaNoBanco(crianca);
     }
 
-    public void buscarCrianca(String matriculaCrianca) {
+    public Crianca buscarCrianca(String matriculaCrianca) {
+        Crianca criancaEncontrada = repositoryCrianca.buscarCriancaNoBanco(matriculaCrianca);
 
+        return criancaEncontrada;
     }
 
 

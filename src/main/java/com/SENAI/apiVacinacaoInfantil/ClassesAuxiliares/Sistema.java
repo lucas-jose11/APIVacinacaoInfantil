@@ -2,6 +2,7 @@ package com.SENAI.apiVacinacaoInfantil.ClassesAuxiliares;
 
 import com.SENAI.apiVacinacaoInfantil.DTOs.CriancaDTO;
 import com.SENAI.apiVacinacaoInfantil.DTOs.ResponsavelDTO;
+import com.SENAI.apiVacinacaoInfantil.Entities.Crianca;
 import com.SENAI.apiVacinacaoInfantil.Service.CriancaService;
 import com.SENAI.apiVacinacaoInfantil.Service.ResponsavelService;
 
@@ -17,6 +18,8 @@ public class Sistema {
     }
 
     private Scanner sc = new Scanner(System.in);
+
+
 
     public void IniciarMenu() {
 
@@ -134,12 +137,31 @@ public class Sistema {
 
         //solicita a matricula
         System.out.println("Informe o número de matricula da certidão de nascimento...");
-        int numMatriculaCert = sc.nextInt();
+        String numMatriculaCert = sc.nextLine();
+
+        CriancaService criancaService = new CriancaService();
 
         //instancia a classe a ser procurada
         CriancaService crianca = new CriancaService();
 
+        Crianca criancaEncontrada = criancaService.buscarCrianca(numMatriculaCert);
 
+        if (criancaEncontrada != null) {
+
+            System.out.println("Criança encontrada com sucesso!");
+            System.out.println("Nome: " + criancaEncontrada.getNome());
+            System.out.println("Data de Nascimento: " + criancaEncontrada.getDataNascimento());
+
+            // O próximo passo será listar as vacinas aqui embaixo
+            System.out.println("\n--- STATUS DAS VACINAS ---");
+            System.out.println("[ Carteira de vacinação em construção... ]");
+
+        } else {
+            System.out.println("Nenhuma criança cadastrada com a matrícula: " + numMatriculaCert);
+        }
+
+        System.out.println("\nPressione ENTER para voltar ao menu.");
+        sc.nextLine();
 
 
     }

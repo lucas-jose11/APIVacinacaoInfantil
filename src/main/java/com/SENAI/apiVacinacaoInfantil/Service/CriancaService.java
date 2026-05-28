@@ -38,5 +38,9 @@ public class CriancaService implements ICriancaService {
         repositoryCrianca.inserirCriancaNoBanco(crianca);
     }
 
+    public void buscarCrianca(String matriculaCrianca) {
+
+    }
+
 
 }

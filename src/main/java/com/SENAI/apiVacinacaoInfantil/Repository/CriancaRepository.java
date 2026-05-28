@@ -11,6 +11,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 public class CriancaRepository
         implements ICriancaRepository {
 
+
     @Override
     public void inserirCriancaNoBanco(Crianca crianca) {
 
@@ -41,5 +42,19 @@ public class CriancaRepository
         } catch (Exception e) {
             System.out.println( "Erro ao salvar: " + e.getMessage());
         }
+    }
+
+    public void buscarCriancaNoBanco(Crianca crianca) {
+        // A sintaxe do SELECT com a condição WHERE para filtrar pela matrícula
+        String sql = "SELECT * FROM Crianca WHERE matricula_certidao = ?";
+
+        Crianca criancaEncontrada = null; // Começa nulo, só preenche se encontrar no banco
+
+        try (
+         //continuar aqui
+                ) {
+
+        }
+
     }
 }

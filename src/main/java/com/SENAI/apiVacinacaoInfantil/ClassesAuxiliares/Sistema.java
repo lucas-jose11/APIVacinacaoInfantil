@@ -124,8 +124,23 @@ public class Sistema {
 
         sc.nextLine();
     }
+    //Valida se a vacina foi aplicada, pega o número da matrícula
+    // da certidão de nascimento da crianca para localizar ela
 
     public void VerificarCarteiraDeVacinacao(){
+        System.out.println("Verifica carteira de vacinação");
+
+        LimparTela();
+
+        //solicita a matricula
+        System.out.println("Informe o número de matricula da certidão de nascimento...");
+        int numMatriculaCert = sc.nextInt();
+
+        //instancia a classe a ser procurada
+        CriancaService crianca = new CriancaService();
+
+
+
 
     }
 

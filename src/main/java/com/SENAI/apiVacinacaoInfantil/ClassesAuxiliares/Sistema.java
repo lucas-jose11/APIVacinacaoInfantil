@@ -1,5 +1,6 @@
 package com.SENAI.apiVacinacaoInfantil.ClassesAuxiliares;
 
+import com.SENAI.apiVacinacaoInfantil.DTOs.CarteiraVacinacaoCriancaDTO;
 import com.SENAI.apiVacinacaoInfantil.DTOs.CriancaDTO;
 import com.SENAI.apiVacinacaoInfantil.DTOs.ResponsavelDTO;
 import com.SENAI.apiVacinacaoInfantil.Entities.Crianca;
@@ -144,13 +145,16 @@ public class Sistema {
         //instancia a classe a ser procurada
         CriancaService crianca = new CriancaService();
 
-        Crianca criancaEncontrada = criancaService.buscarCrianca(numMatriculaCert);
+        CarteiraVacinacaoCriancaDTO carteiraEncontrada = criancaService.buscarCarteira(numMatriculaCert);
 
-        if (criancaEncontrada != null) {
+        if (carteiraEncontrada != null) {
 
             System.out.println("Criança encontrada com sucesso!");
-            System.out.println("Nome: " + criancaEncontrada.getNome());
-            System.out.println("Data de Nascimento: " + criancaEncontrada.getDataNascimento());
+            System.out.println("Nome: " + carteiraEncontrada.getNome_crianca());
+            System.out.println("Data de Nascimento: " + carteiraEncontrada.getData_nascimento());
+            System.out.println("Num matricula: " +carteiraEncontrada.getMatricula_cert());
+            System.out.println("-------Vacinas-------");
+            System.out.println(carteiraEncontrada.getVacinas());
 
             // O próximo passo será listar as vacinas aqui embaixo
             System.out.println("\n--- STATUS DAS VACINAS ---");

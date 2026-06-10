@@ -3,6 +3,7 @@ package com.SENAI.apiVacinacaoInfantil.Service;
 import com.SENAI.apiVacinacaoInfantil.Contracts.Repository.ICriancaRepository;
 import com.SENAI.apiVacinacaoInfantil.Contracts.Repository.IResponsavelRepository;
 import com.SENAI.apiVacinacaoInfantil.Contracts.Service.ICriancaService;
+import com.SENAI.apiVacinacaoInfantil.DTOs.CarteiraVacinacaoCriancaDTO;
 import com.SENAI.apiVacinacaoInfantil.DTOs.CriancaDTO;
 import com.SENAI.apiVacinacaoInfantil.Entities.Crianca;
 import com.SENAI.apiVacinacaoInfantil.Entities.Responsavel;
@@ -10,6 +11,8 @@ import com.SENAI.apiVacinacaoInfantil.Repository.CriancaRepository;
 import com.SENAI.apiVacinacaoInfantil.Repository.ResponsavelRepository;
 
 public class CriancaService implements ICriancaService {
+
+
 
     private ICriancaRepository repositoryCrianca = new CriancaRepository();
     private IResponsavelRepository repositoryResponsavel = new ResponsavelRepository();
@@ -38,10 +41,10 @@ public class CriancaService implements ICriancaService {
         repositoryCrianca.inserirCriancaNoBanco(crianca);
     }
 
-    public Crianca buscarCrianca(String matriculaCrianca) {
-        Crianca criancaEncontrada = repositoryCrianca.buscarCriancaNoBanco(matriculaCrianca);
+    public CarteiraVacinacaoCriancaDTO buscarCarteira(String matriculaCrianca) {
+        CarteiraVacinacaoCriancaDTO carteiraVacinas = repositoryCrianca.buscarCarteiraVacNoBanco(matriculaCrianca);
 
-        return criancaEncontrada;
+        return carteiraVacinas;
     }
 
 

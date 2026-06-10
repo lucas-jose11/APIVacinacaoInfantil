@@ -9,7 +9,7 @@ public class CarteiraVacinacaoCriancaDTO {
     private String matricula_cert;
     private LocalDate data_nascimento;
     private String nome_vacina;
-    private List<Aplicacao_VacinaDTO> vacinas;
+    private List<Aplicacao_VacinaDTO> vacinas = new java.util.ArrayList<>();
 
     public String getNome_crianca() {
         return nome_crianca;

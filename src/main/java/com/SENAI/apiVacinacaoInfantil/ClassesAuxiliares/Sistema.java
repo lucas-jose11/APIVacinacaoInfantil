@@ -1,5 +1,6 @@
 package com.SENAI.apiVacinacaoInfantil.ClassesAuxiliares;
 
+import com.SENAI.apiVacinacaoInfantil.DTOs.Aplicacao_VacinaDTO;
 import com.SENAI.apiVacinacaoInfantil.DTOs.CarteiraVacinacaoCriancaDTO;
 import com.SENAI.apiVacinacaoInfantil.DTOs.CriancaDTO;
 import com.SENAI.apiVacinacaoInfantil.DTOs.ResponsavelDTO;
@@ -128,46 +129,69 @@ public class Sistema {
 
         sc.nextLine();
     }
+
     //Valida se a vacina foi aplicada, pega o número da matrícula
     // da certidão de nascimento da crianca para localizar ela
 
-    public void VerificarCarteiraDeVacinacao(){
+    public void VerificarCarteiraDeVacinacao() {
+
+        // Exibe o título da funcionalidade
         System.out.println("Verifica carteira de vacinação");
 
+        // Limpa a tela para melhorar a visualização
         LimparTela();
 
-        //solicita a matricula
+        // Solicita ao usuário a matrícula da certidão de nascimento
         System.out.println("Informe o número de matricula da certidão de nascimento...");
         String numMatriculaCert = sc.nextLine();
 
+        // Instancia a camada de serviço responsável pela regra de negócio
         CriancaService criancaService = new CriancaService();
 
-        //instancia a classe a ser procurada
-        CriancaService crianca = new CriancaService();
+        // Busca a carteira de vacinação da criança pela matrícula informada
+        CarteiraVacinacaoCriancaDTO carteiraEncontrada =
+                criancaService.buscarCarteira(numMatriculaCert);
 
-        CarteiraVacinacaoCriancaDTO carteiraEncontrada = criancaService.buscarCarteira(numMatriculaCert);
-
+        // Verifica se a criança foi encontrada
         if (carteiraEncontrada != null) {
 
-            System.out.println("Criança encontrada com sucesso!");
+            System.out.println("Criança encontrada com sucesso! \n");
+
+            // Exibe os dados básicos da criança
+            System.out.println("--------Essa é a carteira de vacinação de sua criança-------- \n");
             System.out.println("Nome: " + carteiraEncontrada.getNome_crianca());
             System.out.println("Data de Nascimento: " + carteiraEncontrada.getData_nascimento());
-            System.out.println("Num matricula: " +carteiraEncontrada.getMatricula_cert());
-            System.out.println("-------Vacinas-------");
-            System.out.println(carteiraEncontrada.getVacinas());
+            System.out.println("Número matricula: " + carteiraEncontrada.getMatricula_cert());
 
-            // O próximo passo será listar as vacinas aqui embaixo
-            System.out.println("\n--- STATUS DAS VACINAS ---");
-            System.out.println("[ Carteira de vacinação em construção... ]");
+            System.out.println("\n");
+            System.out.println("-------Vacinas-------");
+
+            // Verifica se existem vacinas cadastradas na carteira
+            if (carteiraEncontrada.getVacinas() == null ||
+                    carteiraEncontrada.getVacinas().isEmpty()) {
+
+                // Caso não existam vacinas cadastradas
+                System.out.println("Nenhuma vacina cadastrada para esta criança.");
+                System.out.println("Retorne ao menu e escolha a opção [3] - Adicionar vacina na carteira.");
+
+            } else {
+
+                // Percorre a lista de vacinas e imprime cada uma delas
+                for (Aplicacao_VacinaDTO vacina : carteiraEncontrada.getVacinas()) {
+                    System.out.println(vacina);
+                }
+            }
 
         } else {
-            System.out.println("Nenhuma criança cadastrada com a matrícula: " + numMatriculaCert);
+
+            // Caso nenhuma criança seja encontrada com a matrícula informada
+            System.out.println("Nenhuma criança cadastrada com a matrícula: "
+                    + numMatriculaCert);
         }
 
+        // Aguarda o usuário pressionar ENTER antes de retornar ao menu
         System.out.println("\nPressione ENTER para voltar ao menu.");
         sc.nextLine();
-
-
     }
 
     public void AdicionarVacinaNaCarteira(){

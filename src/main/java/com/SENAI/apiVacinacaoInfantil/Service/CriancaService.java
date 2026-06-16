@@ -2,13 +2,19 @@ package com.SENAI.apiVacinacaoInfantil.Service;
 
 import com.SENAI.apiVacinacaoInfantil.Contracts.Repository.ICriancaRepository;
 import com.SENAI.apiVacinacaoInfantil.Contracts.Repository.IResponsavelRepository;
+import com.SENAI.apiVacinacaoInfantil.Contracts.Repository.IVacinaRepository;
 import com.SENAI.apiVacinacaoInfantil.Contracts.Service.ICriancaService;
+import com.SENAI.apiVacinacaoInfantil.DTOs.Aplicacao_VacinaDTO;
 import com.SENAI.apiVacinacaoInfantil.DTOs.CarteiraVacinacaoCriancaDTO;
 import com.SENAI.apiVacinacaoInfantil.DTOs.CriancaDTO;
+import com.SENAI.apiVacinacaoInfantil.DTOs.VacinaDTO;
 import com.SENAI.apiVacinacaoInfantil.Entities.Crianca;
 import com.SENAI.apiVacinacaoInfantil.Entities.Responsavel;
 import com.SENAI.apiVacinacaoInfantil.Repository.CriancaRepository;
 import com.SENAI.apiVacinacaoInfantil.Repository.ResponsavelRepository;
+import com.SENAI.apiVacinacaoInfantil.Repository.VacinaRepository;
+
+import java.util.List;
 
 public class CriancaService implements ICriancaService {
 
@@ -16,6 +22,7 @@ public class CriancaService implements ICriancaService {
 
     private ICriancaRepository repositoryCrianca = new CriancaRepository();
     private IResponsavelRepository repositoryResponsavel = new ResponsavelRepository();
+    private IVacinaRepository vacinaRepository = new VacinaRepository();
 
     public void cadastrarCrianca(CriancaDTO dto) {
         // Criar o objeto de tipo Entity Responsável a partir da CriancaDTO, que tem o ResponsavelDTO dentro dela
@@ -31,7 +38,7 @@ public class CriancaService implements ICriancaService {
         crianca.setDataNascimento(dto.getDataNascimento());
         
 
-        //Mandando o objeto Responsável criado para o Repoisotyr, que irá verificar pelo Cpf se o Responsável já existe no banco de dados, e caso não exista, irá cadastrar o Responsável. Voltará o id do responsável para ser adicionado no objeto Criança, para depois mandar o objeto Criança para o Repository cadastrar a criança no banco de dados, pois tem o id_repository na Crianca.
+        //Mandando o objeto Responsável criado para o Repository, que irá verificar pelo Cpf se o Responsável já existe no banco de dados, e caso não exista, irá cadastrar o Responsável. Voltará o id do responsável para ser adicionado no objeto Criança, para depois mandar o objeto Criança para o Repository cadastrar a criança no banco de dados, pois tem o id_repository na Crianca.
         responsavel.setIdResponsavel(repositoryResponsavel.inserirResponsavelNoBanco(responsavel));
 
         // Adicionando o objeto Responsável (com id_responsavel) no objeto Criança
@@ -47,5 +54,12 @@ public class CriancaService implements ICriancaService {
         return carteiraVacinas;
     }
 
+    public void adicionarVacina(String matriculaCertidao, Aplicacao_VacinaDTO dto) {
+        repositoryCrianca.inserirVacinaNaCarteira(matriculaCertidao, dto);
+    }
+
+    public List<VacinaDTO> listarVacinas() {
+        return vacinaRepository.buscarTodasAsVacinas();
+    }
 
 }

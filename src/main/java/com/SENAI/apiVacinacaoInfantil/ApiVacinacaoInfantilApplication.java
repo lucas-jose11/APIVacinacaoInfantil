@@ -14,4 +14,5 @@ public class ApiVacinacaoInfantilApplication {
 		SpringApplication.run(ApiVacinacaoInfantilApplication.class, args);
 	}
 
+
 }

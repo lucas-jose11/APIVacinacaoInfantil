@@ -150,7 +150,7 @@ public class CriancaRepository
                             String nomeVacina = rsVacinas.getString("nome_vacina");
 
                             //verifica se o valor no banco é nulo
-                            if(nomeVacina != null) {
+                            if (nomeVacina != null) {
                                 //Pega o valor armazanado em nomeVacina e coloca dentro do objeto DTO
                                 dose.setNome_vacina(nomeVacina);
                             }
@@ -175,5 +175,84 @@ public class CriancaRepository
 
         // Retorna a carteira preenchida ou null caso não encontre
         return carteiraEncontrada;
+    }
+
+    @Override
+    public void inserirVacinaNaCarteira(String matriculaCertidao, Aplicacao_VacinaDTO dto) {
+
+        // Busca o id_crianca pela matrícula
+        String sqlBuscarCrianca =
+                "SELECT id_crianca FROM Crianca WHERE matricula_certidao = ?";
+
+        // Busca o id_vacina pelo nome da vacina
+        String sqlBuscarVacina =
+                "SELECT id_vacina FROM Vacina WHERE nome_vacina = ?";
+
+        // Busca o id_lote pelo id_vacina
+        String sqlBuscarLote =
+                "SELECT id_lote FROM Lote WHERE id_vacina = ? LIMIT 1";
+
+        // Insere na tabela Aplicacao_Vacina
+        String sqlInserir =
+                "INSERT INTO Aplicacao_Vacina (id_crianca, id_lote, dose, data_aplicacao) " +
+                        "VALUES (?, ?, ?, ?)";
+        //conecta com o banco e depois encerra conexão automaticamente
+        try (Connection conn = DatabaseConnection.conectar()) {
+
+            // Pega o id da criança
+            int idCrianca = 0;
+            try (PreparedStatement stmt = conn.prepareStatement(sqlBuscarCrianca)) {
+                stmt.setString(1, matriculaCertidao);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        idCrianca = rs.getInt("id_crianca");
+                    } else {
+                        System.out.println("Criança não encontrada.");
+                        return;
+                    }
+                }
+            }
+
+            // Pega o id da vacina pelo nome
+            int idVacina = 0;
+            try (PreparedStatement stmt = conn.prepareStatement(sqlBuscarVacina)) {
+                stmt.setString(1, dto.getNome_vacina());
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        idVacina = rs.getInt("id_vacina");
+                    } else {
+                        System.out.println("Vacina '" + dto.getNome_vacina() + "' não encontrada no banco.");
+                        return;
+                    }
+                }
+            }
+
+            //Pega o id do lote pela vacina
+            int idLote = 0;
+            try (PreparedStatement stmt = conn.prepareStatement(sqlBuscarLote)) {
+                stmt.setInt(1, idVacina);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        idLote = rs.getInt("id_lote");
+                    } else {
+                        System.out.println("Nenhum lote encontrado para essa vacina.");
+                        return;
+                    }
+                }
+            }
+
+            // Insere a aplicação da vacina
+            try (PreparedStatement stmt = conn.prepareStatement(sqlInserir)) {
+                stmt.setInt(1, idCrianca);
+                stmt.setInt(2, idLote);
+                stmt.setString(3, dto.getDose());
+                stmt.setDate(4, java.sql.Date.valueOf(dto.getDt_aplicacao()));
+                stmt.executeUpdate();
+                System.out.println("Vacina adicionada no banco com sucesso!");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Erro ao inserir vacina: " + e.getMessage());
+        }
     }
 }

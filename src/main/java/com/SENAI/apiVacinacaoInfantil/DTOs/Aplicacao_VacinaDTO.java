@@ -7,6 +7,7 @@ public class Aplicacao_VacinaDTO {
     private String dose;
     private LocalDate dt_aplicacao;
     private String nome_vacina;
+    private int numero_lote;
 
     public String getNome_vacina() {
         return nome_vacina;
@@ -32,15 +33,24 @@ public class Aplicacao_VacinaDTO {
         this.dt_aplicacao = dt_aplicacao;
     }
 
+    public int getNumero_lote() {
+        return numero_lote;
+    }
+
+    public void setNumero_lote(int numero_lote) {
+        this.numero_lote = numero_lote;
+    }
+
     //imprimir a vacina e seus atributos
     @Override
     public String toString() {
         return """
-           ┌─────────────────────────
-           │ Vacina: %s
-           │ Dose: %s
-           │ Data aplicação: %s
-           └─────────────────────────
-           """.formatted(nome_vacina,dose, dt_aplicacao);
+        ┌─────────────────────────
+        │ Vacina: %s
+        │ Dose: %s
+        │ Data aplicação: %s
+        │ Lote: %s
+        └─────────────────────────
+        """.formatted(nome_vacina,dose, dt_aplicacao,numero_lote);
     }
 }

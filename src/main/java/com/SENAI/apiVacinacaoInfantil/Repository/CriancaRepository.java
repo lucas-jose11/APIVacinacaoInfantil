@@ -72,9 +72,8 @@ public class CriancaRepository
 
         try (Connection conn = DatabaseConnection.conectar()) {
 
-            // =====================================================
-            // ETAPA 1 - BUSCAR DADOS DA CRIANÇA
-            // =====================================================
+            // BUSCAR DADOS DA CRIANÇA
+
             try (PreparedStatement stmtCrianca = conn.prepareStatement(sqlCrianca)) {
 
                 // Substitui o '?' da consulta pela matrícula informada
@@ -106,9 +105,7 @@ public class CriancaRepository
                 }
             }
 
-            // =====================================================
-            // ETAPA 2 - BUSCAR VACINAS DA CRIANÇA
-            // =====================================================
+            //BUSCAR VACINAS DA CRIANÇA
             // Só executa se a criança foi encontrada
             if (carteiraEncontrada != null && idCriancaEncontrada > 0) {
 

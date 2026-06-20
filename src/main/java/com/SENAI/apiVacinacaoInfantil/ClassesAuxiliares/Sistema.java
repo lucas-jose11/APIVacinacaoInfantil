@@ -129,8 +129,7 @@ public class Sistema {
         sc.nextLine();
     }
 
-    //Valida se a vacina foi aplicada, pega o número da matrícula
-    // da certidão de nascimento da crianca para localizar ela
+    //Valida se a vacina foi aplicada, pega o número da matrícula da certidão de nascimento da crianca para localizar ela
 
     public void VerificarCarteiraDeVacinacao() {
 
@@ -192,7 +191,9 @@ public class Sistema {
         System.out.println("\nPressione ENTER para voltar ao menu.");
         sc.nextLine();
     }
-    // Método para validar se pode adicionar a dose sequencialmente
+
+
+    // Metodo para validar se pode adicionar a dose sequencialmente
     private boolean podeAdicionarDose(String dose, java.util.List<String> dosesJaCadastradas) {
 
         if (dose.equalsIgnoreCase("Dose Única")) {
@@ -255,10 +256,7 @@ public class Sistema {
         System.out.println("======================================================\n");
 
         System.out.println("Informe os dados da vacina a ser adicionada:\n");
-
-        // ============================
         // ESCOLHA DA VACINA POR OPÇÃO
-        // ============================
         VacinaDTO vacinaEscolhida = null;
         int opcaoVacina = -1;
 
@@ -281,10 +279,7 @@ public class Sistema {
 
         // Guarda o nome da vacina escolhida
         String nomeVacina = vacinaEscolhida.getNome_vacina();
-
-        // ============================
         // VALIDAÇÃO DA DOSE
-        // ============================
         String[] todasAsDoses = {"Dose Única", "1ª dose", "2ª dose", "3ª dose", "4ª dose"};
         String dose = "";
         boolean doseValida = false;

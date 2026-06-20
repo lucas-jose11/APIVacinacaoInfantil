@@ -58,7 +58,7 @@ public class CriancaRepository
         // Consulta SQL para buscar todas as vacinas aplicadas na criança
         // utilizando o id_crianca como chave estrangeira
         String sqlVacinas =
-                "SELECT v.nome_vacina, av.dose, av.data_aplicacao " +
+                "SELECT v.nome_vacina, av.dose, av.data_aplicacao, l.numero_lote, l.validade " +
                         "FROM Aplicacao_Vacina av " +
                         "INNER JOIN Lote l ON av.id_lote = l.id_lote " +
                         "INNER JOIN Vacina v ON l.id_vacina = v.id_vacina " +
@@ -155,6 +155,12 @@ public class CriancaRepository
                                 dose.setNome_vacina(nomeVacina);
                             }
 
+                            dose.setNumero_lote(rsVacinas.getInt("numero_lote"));
+
+                            if (rsVacinas.getDate("validade") != null) {
+                                dose.setValidade(rsVacinas.getDate("validade").toLocalDate());
+                            }
+
                             // Adiciona a vacina na lista
                             listaDeDoses.add(dose);
                         }
@@ -176,27 +182,24 @@ public class CriancaRepository
         // Retorna a carteira preenchida ou null caso não encontre
         return carteiraEncontrada;
     }
-
-    @Override
+@Override
     public void inserirVacinaNaCarteira(String matriculaCertidao, Aplicacao_VacinaDTO dto) {
 
-        // Busca o id_crianca pela matrícula
         String sqlBuscarCrianca =
                 "SELECT id_crianca FROM Crianca WHERE matricula_certidao = ?";
 
-        // Busca o id_vacina pelo nome da vacina
         String sqlBuscarVacina =
                 "SELECT id_vacina FROM Vacina WHERE nome_vacina = ?";
 
-        // Busca o id_lote pelo id_vacina
         String sqlBuscarLote =
-                "SELECT id_lote FROM Lote WHERE id_vacina = ? LIMIT 1";
+                "SELECT id_lote FROM Lote " +
+                        "WHERE id_vacina = ? " +
+                        "LIMIT 1";
 
-        // Insere na tabela Aplicacao_Vacina
         String sqlInserir =
                 "INSERT INTO Aplicacao_Vacina (id_crianca, id_lote, dose, data_aplicacao) " +
                         "VALUES (?, ?, ?, ?)";
-        //conecta com o banco e depois encerra conexão automaticamente
+
         try (Connection conn = DatabaseConnection.conectar()) {
 
             // Pega o id da criança
@@ -207,7 +210,6 @@ public class CriancaRepository
                     if (rs.next()) {
                         idCrianca = rs.getInt("id_crianca");
                     } else {
-                        System.out.println("Criança não encontrada.");
                         return;
                     }
                 }
@@ -221,13 +223,12 @@ public class CriancaRepository
                     if (rs.next()) {
                         idVacina = rs.getInt("id_vacina");
                     } else {
-                        System.out.println("Vacina '" + dto.getNome_vacina() + "' não encontrada no banco.");
                         return;
                     }
                 }
             }
 
-            //Pega o id do lote pela vacina
+            // Pega o lote
             int idLote = 0;
             try (PreparedStatement stmt = conn.prepareStatement(sqlBuscarLote)) {
                 stmt.setInt(1, idVacina);
@@ -235,7 +236,6 @@ public class CriancaRepository
                     if (rs.next()) {
                         idLote = rs.getInt("id_lote");
                     } else {
-                        System.out.println("Nenhum lote encontrado para essa vacina.");
                         return;
                     }
                 }
@@ -248,11 +248,37 @@ public class CriancaRepository
                 stmt.setString(3, dto.getDose());
                 stmt.setDate(4, java.sql.Date.valueOf(dto.getDt_aplicacao()));
                 stmt.executeUpdate();
-                System.out.println("Vacina adicionada no banco com sucesso!");
             }
 
         } catch (Exception e) {
-            System.out.println("Erro ao inserir vacina: " + e.getMessage());
+            e.printStackTrace(); // apenas para debug
+        }
+    }
+
+    @Override
+    public void deletarVacinaDaCarteira(String matriculaCertidao, String nomeVacina, String dataAplicacao) {
+
+        String sql =
+                "DELETE FROM Aplicacao_Vacina " +
+                        "WHERE id_crianca = (" +
+                        "    SELECT id_crianca FROM Crianca WHERE matricula_certidao = ?" +
+                        ") AND id_lote IN (" +
+                        "    SELECT l.id_lote FROM Lote l " +
+                        "    INNER JOIN Vacina v ON l.id_vacina = v.id_vacina " +
+                        "    WHERE v.nome_vacina = ?" +
+                        ") AND data_aplicacao = ?";
+
+        try (Connection conn = DatabaseConnection.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, matriculaCertidao);
+            stmt.setString(2, nomeVacina);
+            stmt.setDate(3, java.sql.Date.valueOf(dataAplicacao));
+
+            stmt.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace(); // apenas para debug
         }
     }
 }

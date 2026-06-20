@@ -9,6 +9,8 @@ public class CarteiraVacinacaoCriancaDTO {
     private String matricula_cert;
     private LocalDate data_nascimento;
     private String nome_vacina;
+    private int numero_lote;
+    private LocalDate validade;
     private List<Aplicacao_VacinaDTO> vacinas = new java.util.ArrayList<>();
 
     public String getNome_crianca() {
@@ -42,6 +44,14 @@ public class CarteiraVacinacaoCriancaDTO {
     public void setNome_vacina(String nome_vacina) {
         this.nome_vacina = nome_vacina;
     }
+
+    public int getNumero_lote() {return numero_lote;}
+
+    public void setNumero_lote(int numero_lote) {this.numero_lote = numero_lote;}
+
+    public LocalDate getValidade() {return validade;}
+
+    public void setValidade(LocalDate validade) {this.validade = validade;}
 
     public List<Aplicacao_VacinaDTO> getVacinas() {
         return vacinas;

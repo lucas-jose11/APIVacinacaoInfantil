@@ -61,5 +61,7 @@ public class CriancaService implements ICriancaService {
     public List<VacinaDTO> listarVacinas() {
         return vacinaRepository.buscarTodasAsVacinas();
     }
-
+    public void deletarVacina(String matriculaCertidao, String nomeVacina, String dataAplicacao) {
+        repositoryCrianca.deletarVacinaDaCarteira(matriculaCertidao, nomeVacina, dataAplicacao);
+    }
 }

@@ -8,6 +8,8 @@ public class Aplicacao_VacinaDTO {
     private LocalDate dt_aplicacao;
     private String nome_vacina;
     private int numero_lote;
+    private LocalDate validade;
+
 
     public String getNome_vacina() {
         return nome_vacina;
@@ -32,7 +34,6 @@ public class Aplicacao_VacinaDTO {
     public void setDt_aplicacao(LocalDate dt_aplicacao) {
         this.dt_aplicacao = dt_aplicacao;
     }
-
     public int getNumero_lote() {
         return numero_lote;
     }
@@ -41,16 +42,31 @@ public class Aplicacao_VacinaDTO {
         this.numero_lote = numero_lote;
     }
 
-    //imprimir a vacina e seus atributos
+    public LocalDate getValidade() {
+        return validade;
+    }
+
+    public void setValidade(LocalDate validade) {
+        this.validade = validade;
+    }
+//Imprime as vacinas e seus atributos
     @Override
     public String toString() {
+        // Formata as datas para o padrão brasileiro
+        String dataFormatada = dt_aplicacao != null ?
+                dt_aplicacao.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "N/A";
+
+        String validadeFormatada = validade != null ?
+                validade.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "N/A";
+
         return """
         ┌─────────────────────────
         │ Vacina: %s
         │ Dose: %s
         │ Data aplicação: %s
-        │ Lote: %s
+        │ Lote: %d
+        │ Validade: %s
         └─────────────────────────
-        """.formatted(nome_vacina,dose, dt_aplicacao,numero_lote);
+    """.formatted(nome_vacina, dose, dataFormatada, numero_lote, validadeFormatada);
     }
 }

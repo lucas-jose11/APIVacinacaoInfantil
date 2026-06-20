@@ -11,4 +11,6 @@ public interface ICriancaRepository {
     CarteiraVacinacaoCriancaDTO buscarCarteiraVacNoBanco(String matriculaCertidao);
 
     void inserirVacinaNaCarteira(String matriculaCertidao, Aplicacao_VacinaDTO dto);
+
+    void deletarVacinaDaCarteira(String matriculaCertidao, String nomeVacina, String dataAplicacao);
 }

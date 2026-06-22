@@ -1,0 +1,70 @@
+-- IRÁ DELETAR QUALQUER BANCO CHAMADO 'BANCO' E IRÁ CRIAR UM NOVO
+-- LEIA ACIMA!!!
+
+DROP DATABASE IF EXISTS banco;
+CREATE DATABASE banco;
+
+USE banco;
+
+CREATE TABLE Responsavel (
+    id_responsavel INT AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    cpf VARCHAR(14) NOT NULL UNIQUE,
+    telefone VARCHAR(20),
+
+    PRIMARY KEY (id_responsavel)
+);
+
+CREATE TABLE Crianca (
+    id_crianca INT AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    matricula_certidao VARCHAR(6) NOT NULL UNIQUE,
+    data_nascimento DATE NOT NULL,
+    id_responsavel INT,
+
+    PRIMARY KEY (id_crianca),
+
+    CONSTRAINT fk_crianca_responsavel
+        FOREIGN KEY (id_responsavel)
+        REFERENCES Responsavel(id_responsavel)
+);
+
+CREATE TABLE Vacina (
+    id_vacina INT AUTO_INCREMENT,
+    nome_vacina VARCHAR(100) NOT NULL,
+    fabricante VARCHAR(100) NOT NULL,
+    doses_previstas INT NOT NULL,
+
+    PRIMARY KEY (id_vacina)
+);
+
+CREATE TABLE Lote (
+    id_lote INT AUTO_INCREMENT,
+    id_vacina INT NOT NULL,
+    numero_lote INT NOT NULL,
+    validade DATE NOT NULL,
+
+    PRIMARY KEY (id_lote),
+
+    CONSTRAINT fk_lote_vacina
+        FOREIGN KEY (id_vacina)
+        REFERENCES Vacina(id_vacina)
+);
+
+CREATE TABLE Aplicacao_Vacina (
+    id_aplicacao INT AUTO_INCREMENT,
+    id_crianca INT NOT NULL,
+    id_lote INT NOT NULL,
+    dose VARCHAR(20) NOT NULL,
+    data_aplicacao DATE NOT NULL,
+
+    PRIMARY KEY (id_aplicacao),
+
+    CONSTRAINT fk_aplicacao_crianca
+        FOREIGN KEY (id_crianca)
+        REFERENCES Crianca(id_crianca),
+
+    CONSTRAINT fk_aplicacao_lote_vacina
+        FOREIGN KEY (id_lote)
+        REFERENCES Lote(id_lote)
+);

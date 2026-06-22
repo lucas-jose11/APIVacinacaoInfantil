@@ -1,0 +1,87 @@
+-- INSERTS PARA AS TABELAS DA DATABASE 'BANCO'
+
+-- RESPONSÁVEIS
+INSERT INTO Responsavel (nome, cpf, telefone)
+VALUES
+('Carlos Silva', '123.456.789-01', '(47) 99911-1111'),
+('Mariana Souza', '234.567.890-12', '(47) 99922-2222'),
+('João Pereira', '345.678.901-23', '(47) 99933-3333'),
+('Fernanda Costa', '456.789.012-34', '(47) 99944-4444'),
+('Ricardo Oliveira', '567.890.123-45', '(47) 99955-5555');
+
+-- CRIANÇAS
+INSERT INTO Crianca (nome, matricula_certidao, data_nascimento, id_responsavel)
+VALUES
+('Lucas Silva', '120343', '2022-03-15', 1),
+('Ana Souza', '128432', '2021-08-10', 2),
+('Pedro Pereira', '539874', '2023-01-22', 3),
+('Julia Costa', '010004', '2020-11-05', 4),
+('Gabriel Oliveira', '220005', '2022-06-30', 5);
+
+-- VACINAS
+INSERT INTO Vacina (nome_vacina, fabricante, doses_previstas)
+VALUES
+('BCG', 'Fiocruz', 1),
+('Hepatite B', 'Butantan', 3),
+('Pentavalente', 'Sanofi', 3),
+('Poliomielite', 'Bio-Manguinhos', 4),
+('Rotavirus', 'GlaxoSmithKline', 2),
+('Pneumococica 10', 'Pfizer', 2),
+('Meningococica C', 'Novartis', 2),
+('Febre Amarela', 'Fiocruz', 1),
+('Tríplice Viral', 'Merck', 2),
+('Meningite', 'GSK', 2);
+
+-- LOTES
+INSERT INTO Lote (id_vacina, numero_lote, validade)
+VALUES
+(1, 1001, '2027-12-31'),
+(2, 2001, '2027-11-15'),
+(3, 3001, '2028-01-20'),
+(4, 4001, '2027-10-10'),
+(5, 5001, '2027-09-25'),
+(6, 6001, '2028-03-30'),
+(7, 7001, '2027-08-18'),
+(8, 8001, '2028-05-12'),
+(9, 9001, '2027-07-22'),
+(10, 10001, '2028-06-14');
+
+-- APLICAÇÕES DE VACINA (20 registros)
+-- Lucas (6 vacinas)
+INSERT INTO Aplicacao_Vacina (id_crianca, id_lote, dose, data_aplicacao)
+VALUES
+(1, 1, 'Dose Única', '2022-03-16'),
+(1, 2, '1ª Dose', '2022-03-16'),
+(1, 2, '2ª Dose', '2022-05-16'),
+(1, 3, '1ª Dose', '2022-05-20'),
+(1, 4, '1ª Dose', '2022-07-15'),
+(1, 5, '1ª Dose', '2022-07-15');
+
+-- Ana (5 vacinas)
+INSERT INTO Aplicacao_Vacina (id_crianca, id_lote, dose, data_aplicacao)
+VALUES
+(2, 1, 'Dose Única', '2021-08-11'),
+(2, 2, '1ª Dose', '2021-08-11'),
+(2, 2, '2ª Dose', '2021-10-11'),
+(2, 3, '1ª Dose', '2021-10-15'),
+(2, 6, '1ª Dose', '2021-12-20');
+
+-- Pedro (2 vacinas)
+INSERT INTO Aplicacao_Vacina (id_crianca, id_lote, dose, data_aplicacao)
+VALUES
+(3, 1, 'Dose Única', '2023-01-23'),
+(3, 2, '1ª Dose', '2023-01-23');
+
+-- Julia (7 vacinas)
+INSERT INTO Aplicacao_Vacina (id_crianca, id_lote, dose, data_aplicacao)
+VALUES
+(4, 1, 'Dose Única', '2020-11-06'),
+(4, 2, '1ª Dose', '2020-11-06'),
+(4, 2, '2ª Dose', '2021-01-06'),
+(4, 3, '1ª Dose', '2021-01-10'),
+(4, 4, '1ª Dose', '2021-03-10'),
+(4, 7, '1ª Dose', '2021-05-12'),
+(4, 9, '1ª Dose', '2021-09-20');
+
+-- Gabriel (0 vacinas)
+-- Nenhum registro para esta criança

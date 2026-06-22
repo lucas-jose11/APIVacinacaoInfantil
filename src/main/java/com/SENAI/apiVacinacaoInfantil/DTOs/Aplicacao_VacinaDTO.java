@@ -63,7 +63,7 @@ public class Aplicacao_VacinaDTO {
         ┌─────────────────────────
         │ Vacina: %s
         │ Dose: %s
-        │ Data aplicação: %s
+        │ Data da aplicação: %s
         │ Lote: %d
         │ Validade: %s
         └─────────────────────────

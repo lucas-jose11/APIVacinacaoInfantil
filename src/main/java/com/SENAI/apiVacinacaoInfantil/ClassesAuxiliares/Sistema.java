@@ -21,17 +21,15 @@ public class Sistema {
     private Scanner sc = new Scanner(System.in);
 
 
-
     public void IniciarMenu() {
 
-        int op;
+        String op;
 
         System.out.println("Bem-vindo ao Criança Check-Out!");
         System.out.println("O sistema completo para acompanhar as vacinas de seu filho.\n");
 
         do {
-
-            System.out.println("\nEscolha uma opção:");
+            System.out.println("Escolha uma opção:");
 
             System.out.println("[1] - Cadastrar minha criança.");
             System.out.println("[2] - Verificar a carteira de vacinação.");
@@ -40,36 +38,35 @@ public class Sistema {
             System.out.println("[5] - SAIR");
 
             System.out.print("Digite a opção: ");
-            op = sc.nextInt();
-            sc.nextLine();
+            op = sc.nextLine();
 
             switch (op) {
 
-                case 1:
+                case "1":
                     CadastrarCrianca();
                     break;
 
-                case 2:
+                case "2":
                     VerificarCarteiraDeVacinacao();
                     break;
 
-                case 3:
+                case "3":
                     AdicionarVacinaNaCarteira();
                     break;
 
-                case 4:
+                case "4":
                     DeletarVacinaNaCarteira();
                     break;
 
-                case 5:
+                case "5":
                     System.out.println("Saindo...");
                     break;
 
                 default:
-                    System.out.println("Opção inválida. Tente novamente.");
+                    System.out.println("Opção inválida. Digite um número válido.\n");
             }
 
-        } while (op != 5);
+        } while (!op.equals("5"));
 
         sc.close();
         LimparTela();
@@ -130,7 +127,6 @@ public class Sistema {
     }
 
     //Valida se a vacina foi aplicada, pega o número da matrícula da certidão de nascimento da crianca para localizar ela
-
     public void VerificarCarteiraDeVacinacao() {
 
         // Exibe o título da funcionalidade
@@ -170,7 +166,7 @@ public class Sistema {
 
                 // Caso não existam vacinas cadastradas
                 System.out.println("Nenhuma vacina cadastrada para esta criança.");
-                System.out.println("Retorne ao menu e escolha a opção [3] - Adicionar vacina na carteira.");
+                System.out.println("Se quiser adicionar alguma aplicação de vacina, escolha a opção [3] do Menu Inicial.");
 
             } else {
 
@@ -191,7 +187,6 @@ public class Sistema {
         System.out.println("\nPressione ENTER para voltar ao menu.");
         sc.nextLine();
     }
-
 
     // Metodo para validar se pode adicionar a dose sequencialmente
     private boolean podeAdicionarDose(String dose, java.util.List<String> dosesJaCadastradas) {
@@ -235,7 +230,7 @@ public class Sistema {
         // Caso não encontre a criança cadastrada
         if (carteira == null) {
             System.out.println("\nNenhuma criança encontrada com a matrícula: " + numMatriculaCert);
-            System.out.println("Cadastre a criança primeiro na opção [1] do menu anterior.");
+            System.out.println("Cadastre a criança primeiro na opção [1] do Menu Inicial.");
             System.out.println("\nPressione ENTER para voltar ao menu.");
             sc.nextLine();
             return;
@@ -255,13 +250,13 @@ public class Sistema {
         }
         System.out.println("======================================================\n");
 
-        System.out.println("Informe os dados da vacina a ser adicionada:\n");
+        System.out.println("Informe os dados da vacina a ser adicionada.");
         // ESCOLHA DA VACINA POR OPÇÃO
         VacinaDTO vacinaEscolhida = null;
         int opcaoVacina = -1;
 
         while (true) {
-            System.out.print("Digite o número da vacina a ser adicionada: ");
+            System.out.print("Digite o NÚMERO CORRESPONDENTE à vacina que você quer adicionar: ");
             try {
                 opcaoVacina = Integer.parseInt(sc.nextLine());
 
@@ -270,7 +265,7 @@ public class Sistema {
                     vacinaEscolhida = vacinas.get(opcaoVacina - 1); // pega direto da lista
                     break; // sai do loop
                 } else {
-                    System.out.println("Opção inválida! Digite um número entre 1 e " + vacinas.size());
+                    System.out.println("Opção inválida! Digite um NÚMERO CORRESPONDENTE válido entre 1 e " + vacinas.size());
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Entrada inválida! Digite apenas números.");
@@ -309,40 +304,47 @@ public class Sistema {
         System.out.println("\nDoses disponíveis:");
         int contador = 1;
         for (String doseOpcao : dosesDisponiveis) {
-            String status = dosesJaCadastradas.contains(doseOpcao) ? " ✓ (já cadastrada)" : "";
+            String status = dosesJaCadastradas.contains(doseOpcao) ? " (já cadastrada)" : "";
             System.out.println("[" + contador + "] " + doseOpcao + status);
             contador++;
         }
 
         // Loop até escolher uma dose válida
         while (!doseValida) {
-            System.out.print("\nEscolha a dose: ");
+            System.out.print("\nEscolha a dose ou digite [0] para sair: ");
+
             String escolha = sc.nextLine();
 
             try {
                 int opcaoDose = Integer.parseInt(escolha);
 
+                if (opcaoDose == 0) {
+                    System.out.println("Operação cancelada. Pressione ENTER para voltar ao menu.");
+                    sc.nextLine();
+                    return;
+                }
+
                 if (opcaoDose < 1 || opcaoDose > dosesDisponiveis.size()) {
-                    System.out.println(" Opção inválida!");
+                    System.out.println("Opção inválida!");
                     continue;
                 }
 
                 dose = dosesDisponiveis.get(opcaoDose - 1);
 
                 if (dosesJaCadastradas.contains(dose)) {
-                    System.out.println(" Essa dose já foi aplicada para esta criança!");
+                    System.out.println("Essa dose já foi aplicada para esta criança!");
                     continue;
                 }
 
                 if (!podeAdicionarDose(dose, dosesJaCadastradas)) {
-                    System.out.println(" Você deve adicionar as doses anteriores primeiro!");
+                    System.out.println("Você deve adicionar as doses anteriores primeiro!");
                     continue;
                 }
 
                 doseValida = true;
 
             } catch (NumberFormatException e) {
-                System.out.println(" Digite um número válido!");
+                System.out.println("Digite um número válido!");
             }
         }
         // VALIDAÇÃO DA DATA
@@ -370,7 +372,7 @@ public class Sistema {
 
         // Loop até informar uma data válida
         while (!dataValida) {
-            System.out.print("Data de aplicação (dd/MM/yyyy): ");
+            System.out.print("Data da aplicação (dd/MM/yyyy): ");
             String data = sc.nextLine();
 
             try {
@@ -378,7 +380,7 @@ public class Sistema {
 
                 // Verifica se é posterior à dose anterior
                 if (dataAnterior != null && dataAplicacao.isBefore(dataAnterior)) {
-                    System.out.println(" A data deve ser posterior à " + doseAnterior +
+                    System.out.println("A data deve ser posterior à " + doseAnterior +
                             " (" + dataAnterior.format(formatter) + ")");
                     continue;
                 }
@@ -394,7 +396,7 @@ public class Sistema {
                 }
 
                 if (mesmaVacinaMesmodia) {
-                    System.out.println(" Esta vacina já foi aplicada em " +
+                    System.out.println("Esta vacina já foi aplicada em " +
                             dataAplicacao.format(formatter) + "!");
                     continue;
                 }
@@ -402,7 +404,7 @@ public class Sistema {
                 dataValida = true;
 
             } catch (Exception e) {
-                System.out.println(" Data inválida! Use o formato dd/MM/yyyy");
+                System.out.println("Data inválida! Use o formato dd/MM/yyyy e certifique-se que a data é válida.");
             }
         }
         // ADICIONA A VACINA NA CARTEIRA
@@ -432,16 +434,14 @@ public class Sistema {
             System.out.println("Opção inválida! Pressione ENTER para voltar ao menu.");
             sc.nextLine();
         }
-        sc.nextLine();
     }
-
 
     public void DeletarVacinaNaCarteira() {
         System.out.println("================ DELETAR APLICAÇÃO DE VACINA NA CARTEIRA ================\n");
         LimparTela();
 
         // Solicita matrícula da criança
-        System.out.println("Informe o número de matrícula da certidão de nascimento: ");
+        System.out.println("Informe o número de matrícula da certidão de nascimento:");
         String numMatriculaCert = sc.nextLine();
 
         CriancaService criancaService = new CriancaService();
@@ -482,7 +482,7 @@ public class Sistema {
         // Loop para garantir que o usuário digite uma opção válida
         int opcao = -1;
         while (true) {
-            System.out.print("Digite o número da vacina a ser deletada: ");
+            System.out.print("Digite o NÚMERO CORRESPONDENTE à vacina que você quer deletar: ");
             try {
                 opcao = sc.nextInt();
                 sc.nextLine(); // consome quebra de linha
@@ -491,7 +491,7 @@ public class Sistema {
                 if (opcao >= 1 && opcao <= carteira.getVacinas().size()) {
                     break; // sai do loop se for válido
                 } else {
-                    System.out.println("Opção inválida! Digite um número entre 1 e " + carteira.getVacinas().size());
+                    System.out.println("Opção inválida! Digite um NÚMERO CORRESPONDENTE válido.");
                 }
             } catch (Exception e) {
                 // Caso o usuário digite algo que não seja número

@@ -40,7 +40,7 @@ O sistema utiliza MySQL para armazenamento dos dados.
 Antes de executar o projeto:
 
 1. Criar o banco de dados.
-2. Executar o script SQL, presentes na pasta SQL, dentro do Projeto.
+2. Executar os dois script SQL, um sendo o CREATE da DATABASE junto com as TABLES, e o outro sendo os INSERTS para que a DATABASE tenha dados, ambos os scripts SQL estão presentes na pasta SQL, dentro da pasta main.
 3. Configurar usuário e senha na classe:
 
 ```java

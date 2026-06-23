@@ -520,7 +520,7 @@ public class Sistema {
         String escolha = sc.nextLine();
 
         if (escolha.equals("1")) {
-            // Chama novamente o metodo para adicionar outra vacina
+            // Chama novamente o metodo para deletar outra vacina
             DeletarVacinaNaCarteira();
         } else if (escolha.equals("2")) {
             System.out.println("Pressione ENTER para voltar ao menu.");

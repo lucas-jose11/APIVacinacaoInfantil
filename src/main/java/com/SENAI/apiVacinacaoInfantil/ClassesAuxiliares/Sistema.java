@@ -222,6 +222,7 @@ public class Sistema {
         System.out.println("Informe o número de matrícula da certidão de nascimento: ");
         String numMatriculaCert = sc.nextLine();
 
+        // Cria uma nova instância da classe CriancaService
         CriancaService criancaService = new CriancaService();
 
         // Busca a carteira de vacinação pelo número de matrícula
